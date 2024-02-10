@@ -1,5 +1,4 @@
-import { StateUpdater } from "preact/hooks";
-import { grilleSignal, highlightSignal, vitesseSignal } from "./Signals";
+import { highlightSignal, limitationVitesse, vitesseSignal } from "./Signals";
 
 const ligne = (S: number[][], i: number) => S[i].filter((n) => n >= 1);
 
@@ -31,7 +30,7 @@ const possibles = (S: number[][], i: number, j: number): number[] => {
 const suivante = (l:number, c:number) => c+1>=9 ? {l: l+1, c: 0} : {l: l, c: c+1};
 
 const resoudre = async (setGrille: any, S: number[][], i: number = 0, j: number = 0): Promise<Boolean> => {
-    await new Promise(r => setTimeout(r, vitesseSignal.value));
+    if (limitationVitesse.value) await new Promise(r => setTimeout(r, vitesseSignal.value));
     if (i == 9) return true
     highlightSignal.value = {x: i, y: j};
     if (S[i][j] > 0) {
